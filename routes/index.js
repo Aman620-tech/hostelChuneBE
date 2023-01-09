@@ -21,7 +21,7 @@ routes.use("/user", userRoutes);
 routes.post("/register", userRegister);
 routes.post("/login", userLogin);
 routes.post("/forget-password", UserForgetPassword);
-routes.post("/user-get", verifyToken ,UserSingleView);
+routes.get("/user-get", verifyToken, UserSingleView);
 userRoutes.patch("/reset-password/:userId/:token", UserPasswordReset);
 
 module.exports = routes;
