@@ -33,9 +33,11 @@ app.get("*", (req, res) => {
   res.json({ status: 200, response: "wrong Route" });
 });
 
-app.listen(port, HOST, (err) => {
-  if (err) {
-    return console.log({ Error: err.message || `server not started` });
-  }
-  console.log(`server started at http://localhost:${port}`);
-});
+// app.listen(port, HOST, (err) => {
+//   if (err) {
+//     return console.log({ Error: err.message || `server not started` });
+//   }
+//   console.log(`server started at http://localhost:${port}`);
+// });
+
+module.exports = { app }

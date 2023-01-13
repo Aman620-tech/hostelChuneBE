@@ -71,7 +71,7 @@ const userRegister = async (req, res, next) => {
         const User = await UserServices.findUserById(user._id);
 
         const token = await tokenCreate(user._id);
-        const sendMail = await welcomeMail({ email, password })
+        await welcomeMail({ email, password })
 
         res.json({
             status: 200,
