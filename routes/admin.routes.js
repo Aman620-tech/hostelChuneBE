@@ -1,6 +1,10 @@
 const AdminRoutes = require("express").Router();
-const { addSubAdmin } = require("../controller/user.controller");
+const { addUser } = require("../controller/user.controller");
 
-AdminRoutes.post("/add-admin", addSubAdmin);
+AdminRoutes.post("/add-sub-admin", addUser);
+AdminRoutes.post("/add-admin", addUser);
+AdminRoutes.post("/add-admin", addUser);
+AdminRoutes.post("/add-admin", addUser);
+AdminRoutes.post("/add-admin", addUser);
 
 module.exports = AdminRoutes;

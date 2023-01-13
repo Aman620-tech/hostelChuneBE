@@ -62,6 +62,22 @@ const userSchema = mongoose.Schema(
         type: Boolean,
         default: false,
       },
+      hostelManagement: {
+        type: Boolean,
+        default: false,
+      },
+      kycManagement: {
+        type: Boolean,
+        default: false,
+      },
+      contentManagement: {
+        type: Boolean,
+        default: false,
+      },
+      feedbackManagement: {
+        type: Boolean,
+        default: false,
+      },
       accountManagement: {
         type: Boolean,
         default: false,

@@ -2,57 +2,35 @@ const mongoose = require("mongoose");
 
 const hostelSchema = mongoose.Schema(
   {
-    name: {
+    bankName: {
       type: String,
     },
-    active: {
-      type: Boolean,
-      default: true,
-    },
-    ownerId: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User"
     },
-    // user: [{
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "User"
-    // }],
-    hostelRoom: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User"
-    }],
-    verified: {
-      type: Boolean,
-      default: false,
+    currency:{
+        type: String,
     },
-    number: {
+    accountNumber: {
       type: Number,
-      require: true
     },
-    address: {
+    ifscCode: {
       type: String,
-      require: true
     },
     country: {
       type: String,
-      require: true
     },
     state: {
       type: String,
-      require: true
     },
     city: {
       type: String,
-      require: true
-    },
-    nearByLocation: {
-      type: String,
-      default: null
     },
     pinCode: {
       type: Number,
     },
-    businessLogo: {
+    passbookImage: {
       imageName: {
         type: String,
       },
@@ -60,8 +38,7 @@ const hostelSchema = mongoose.Schema(
         type: String,
       },
     },
-
-    kyc: {
+    verified: {
       type: Boolean,
       default: false,
     },
