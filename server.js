@@ -1,3 +1,5 @@
+
+require("dotenv").config({ path: ".env" });
 const https = require('https')
 const port = parseInt(process.env.PORT) || 3004;
 const { app } = require('./index')
@@ -10,6 +12,6 @@ const options = {
 };
 
 https.createServer(options, app)
-    .listen(3000, function (req, res) {
-        console.log("Server started at port 3000");
+    .listen(3002, function (req, res) {
+        console.log(`Server started at port ${port}`);
     });
