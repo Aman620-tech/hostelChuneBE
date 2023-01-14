@@ -134,7 +134,7 @@ const UserForgetPassword = async (req, res, next) => {
 
         const token = await forgetPasswordToken(userData, secret);
 
-        const link = `https://63c2a0bd1f9e717f5a2ed065--serene-gumption-44c645.netlify.app/api/reset-password/${user._id}/${token}`;
+        const link = `https://63c2a0bd1f9e717f5a2ed065--serene-gumption-44c645.netlify.app/reset-password/${user._id}/${token}`;
 
         mailOption = {
             to: email,
