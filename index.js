@@ -19,7 +19,7 @@ app.use(logger("dev"));
 
 app.use(
   cors({
-    origin: ["http://localhost:3000/"],
+    origin: ["http://localhost:3000/", "https://63c2e3027b1d840008721d06--serene-gumption-44c645.netlify.app"],
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     "Access-Control-Allow-Header":
       "Origin, X-Requested-With, Content-Type, Accept",
