@@ -138,7 +138,6 @@ const UserForgetPassword = async (req, res, next) => {
         return res.json({
             status: 200,
             response: "Mail Sent successfully",
-            info: info.response,
         });
     } catch (err) {
         res.json({ status: 400, response: err.message });
