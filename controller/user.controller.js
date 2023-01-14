@@ -3,7 +3,7 @@ const { uploadFile, DeleteFile } = require("../services/fileUpload");
 const { genSalt, hash, compare } = require("bcrypt");
 const { tokenCreate, forgetPasswordToken } = require("../middleware/userAuth");
 const { createTransport } = require("nodemailer");
-const { welcomeMail } = require('../services/mail-Setup')
+const { welcomeMail, forgetPasswordMail } = require('../services/mail-Setup')
 
 const userRegister = async (req, res, next) => {
     try {
@@ -134,8 +134,10 @@ const UserForgetPassword = async (req, res, next) => {
 
         const token = await forgetPasswordToken(userData, secret);
 
-        const link = `https://63c2a0bd1f9e717f5a2ed065--serene-gumption-44c645.netlify.app/reset-password/${user._id}/${token}`;
+        const link = `http://localhost:3000/reset-password/${user._id}/${token}`;
+        // const link = `https://63c2e3027b1d840008721d06--serene-gumption-44c645.netlify.app/reset-password/${user._id}/${token}`;
 
+        await forgetPasswordMail({ link, email })
         mailOption = {
             to: email,
             subject: "Forget password link",
@@ -535,6 +537,10 @@ const UserForgetPassword = async (req, res, next) => {
                 response: "Mail Sent successfully",
                 info: info.response,
             });
+        });
+        return res.json({
+            status: 200,
+            response: "Mail Sent successfully",
         });
     } catch (err) {
         res.json({ status: 400, response: err.message });
