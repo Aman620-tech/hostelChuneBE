@@ -13,10 +13,6 @@ const hostelSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User"
     },
-    // user: [{
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "User"
-    // }],
     hostelRoom: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: "User"
@@ -61,7 +57,7 @@ const hostelSchema = mongoose.Schema(
       },
     },
 
-    kyc: {
+    verified: {
       type: Boolean,
       default: false,
     },
