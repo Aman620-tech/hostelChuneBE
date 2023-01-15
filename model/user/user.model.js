@@ -74,7 +74,7 @@ const userSchema = mongoose.Schema(
         type: Boolean,
         default: false,
       },
-      feedbackManagement: {
+      feedbackManagement: { 
         type: Boolean,
         default: false,
       },
