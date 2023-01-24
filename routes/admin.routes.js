@@ -1,8 +1,10 @@
 const AdminRoutes = require("express").Router();
-const { addUser } = require("../controller/user.controller");
+const { UserSingleView, passwordChange, addUser } = require("../controller/user.controller");
+const { adminAuthenticate } = require('../middleware/userAuth')
 
-AdminRoutes.post("/add-sub-admin", addUser);
-AdminRoutes.post("/add-admin", addUser);
+
+AdminRoutes.post("/add-user",adminAuthenticate, addUser);
+AdminRoutes.get("/view",adminAuthenticate , UserSingleView);
 AdminRoutes.post("/add-admin", addUser);
 AdminRoutes.post("/add-admin", addUser);
 AdminRoutes.post("/add-admin", addUser);

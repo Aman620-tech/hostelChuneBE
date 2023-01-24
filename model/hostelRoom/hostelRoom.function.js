@@ -1,0 +1,1 @@
+const hostelRoom = require('./hostelRoom.model')

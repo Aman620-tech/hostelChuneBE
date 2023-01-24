@@ -14,10 +14,6 @@ const hostelRoomSchema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"
         }],
-        // hostelRoom: [{
-        //     type: mongoose.Schema.Types.ObjectId,
-        //     ref: "User"
-        // }],
         charge: {
             type: Boolean,
             default: false,
@@ -55,6 +51,6 @@ const hostelRoomSchema = mongoose.Schema(
     { timeStamp: true }
 );
 
-const User = mongoose.model("hostelRoom", hostelRoomSchema);
+const hostelRoom = mongoose.model("hostelRoom", hostelRoomSchema);
 
-module.exports = User;
+module.exports = hostelRoom;

@@ -1,21 +1,17 @@
 const Hostel = require("./hostel.model");
 
-class UserServices {
-    viewAllUser = async () => {
-        const user = await Hostel.find();
-        return user;
+class HostelServices {
+    viewAllHostel = async () => {
+        const hostel = await Hostel.find();
+        return hostel;
     };
 
-    userCreate = async (data) => {
-        const user = await Hostel.create(data);
-        return user;
+   hostelCreate = async (data) => {
+        const hostel = await Hostel.create(data);
+        return hostel;
     };
-    findUserById = async (hostelId) => {
+    findHostelById = async (hostelId) => {
         const user = await Hostel.findById(hostelId);
-        return user;
-    };
-    findUserByEmail = async (userId) => {
-        const user = await Hostel.findOne({ userId });
         return user;
     };
     findUserByIdAndUpdate = async (userId, data) => {
@@ -27,4 +23,4 @@ class UserServices {
         return user;
     };
 }
-module.exports = new UserServices();
+module.exports = new HostelServices();
