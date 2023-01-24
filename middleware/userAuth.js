@@ -104,7 +104,7 @@ const userAuthenticate = async (req, res, next) => {
       req.user = user;
       return next();
     }
-    return res.json({ status: 400, response: "Not a customer" });
+    return res.json({ status: 400, response: "Not a user" });
   } catch (err) {
     res.json({ status: 400, Error: err.message });
   }
