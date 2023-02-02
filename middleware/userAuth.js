@@ -92,8 +92,17 @@ const userAuthenticate = async (req, res, next) => {
       });
     }
     const id = await jwt.verify(token, process.env.JWT_SECRET);
-    const user = await userSingleView(id.id);
+    const Dec = await jwt.decode(token,{complete:true})
+    console.log("object", id);
+    const user = await UserService.findUserById(id.id);
 
+    if (user.isDeleted === true) {
+      return res.json({
+        status: 400,
+        message: `User Not Found`,
+      });
+    }
+    
     if (user.active === false) {
       return res.json({
         status: 400,

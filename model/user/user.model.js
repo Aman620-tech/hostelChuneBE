@@ -16,6 +16,10 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    isDeleted:{
+      type: Boolean,
+      default: false,
+    },
     verified: {
       type: Boolean,
       default: false,
@@ -30,6 +34,7 @@ const userSchema = mongoose.Schema(
     },
     mobileNumber: {
       type: Number,
+      unique: true,
     },
     address: {
       type: String,
@@ -102,10 +107,6 @@ const userSchema = mongoose.Schema(
     lastLogin: {
       type: String,
       default: Date.now,
-    },
-    kyc: {
-      type: Boolean,
-      default: false,
     },
   },
   { timeStamp: true }

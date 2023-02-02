@@ -15,7 +15,7 @@ const hostelSchema = mongoose.Schema(
     },
     hostelRoom: [{
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User"
+      ref: "hostelRoom"
     }],
     verified: {
       type: Boolean,

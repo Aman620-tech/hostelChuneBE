@@ -1,16 +1,8 @@
 const User = require("./user.model");
 
 class UserServices {
-  viewAllUser = async () => {
-    const user = await User.find({ role: "user" });
-    return user;
-  };
-  viewAllBusinessUser = async () => {
-    const user = await User.find({ role: "business" });
-    return user;
-  };
-  ViewAllSubAdmin = async () => {
-    const user = await User.find({ role: "subadmin" });
+  viewAllUser = async ({ role, active }) => {
+    const user = await User.find({ role, active });
     return user;
   };
   userCreate = async (data) => {
@@ -26,11 +18,17 @@ class UserServices {
     return user;
   };
   findUserByIdAndUpdate = async (userId, data) => {
-    const user = await User.findByIdAndUpdate(
+    await User.findByIdAndUpdate(
       userId,
       { $set: data },
       { new: true }
     );
+    const user = await this.findUserById(userId)
+    return user;
+  };
+  findUserByIdAndDelete = async (userId, data) => {
+    await User.findByIdAndDelete(userId)
+    const user = await this.findUserById(userId)
     return user;
   };
 }
