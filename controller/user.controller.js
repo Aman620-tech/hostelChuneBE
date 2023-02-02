@@ -131,9 +131,7 @@ const UserForgetPassword = async (req, res, next) => {
         const token = await forgetPasswordToken(userData, secret);
         // const link = `http://localhost:3000/reset-password/${user._id}/${token}`;
         const link = `${process.env.Frontend_Url}/reset-password/${user._id}/${token}`;
-
         await forgetPasswordMail({ link, email })
-
         return res.json({
             status: 200,
             response: "Mail Sent successfully",
@@ -235,7 +233,9 @@ const passwordChange = async (req, res, next) => {
         const userPassword = {
             password: hashPassword,
         };
-        const User = await UserUpdateData(req.user._id, userPassword);
+        await UserUpdateData(req.user._id, userPassword);
+        const User = await UserServices.findUserById(req.user._id);
+
         res.json({
             status: 200,
             response: "Password Updated Successfully",
@@ -248,12 +248,54 @@ const passwordChange = async (req, res, next) => {
 
 const updateUserByToken = async (req, res, next) => {
     try {
+        const {
+            firstName,
+            lastName,
+            email,
+            mobileNumber,
+            address,
+            country,
+            state,
+            city,
+            pinCode,
+            gender,
+            adharCardNo,
+        } = req.body;
+        const userData = {
+            firstName,
+            lastName,
+            email,
+            mobileNumber,
+            address,
+            country,
+            state,
+            city,
+            pinCode,
+            gender,
+            adharCardNo,
+        }
+      
+        const User=  await UserServices.findUserByIdAndUpdate(req.user._id, userData);
+
+
+        res.json({
+            status: 200,
+            response: "Password Updated Successfully",
+            user: User,
+        });
 
     } catch (err) {
         res.json({ status: 400, response: err.message });
     }
 }
-
+const UserDeleteByToken = async (req, res, next) => {
+    try {
+         await UserServices.findUserByIdAndUpdate(req.user._id, { active: false, isDeleted: true });
+        res.json({ status: 200, response: "User Deleted Successfully" });
+    } catch (err) {
+        res.json({ status: 400, response: err.message });
+    }
+};
 
 
 // ==================   Admin ===================
@@ -328,6 +370,53 @@ const addUser = async (req, res, next) => {
     }
 };
 
+const updateUserPermissionById = async (req, res, next) => {
+    try {
+        const { userId } = req.params
+        const {
+            userManagement,
+            hostelManagement,
+            kycManagement,
+            contentManagement,
+            feedbackManagement,
+            accountManagement
+        } = req.body;
+        const userData = {
+            userManagement,
+            hostelManagement,
+            kycManagement,
+            contentManagement,
+            feedbackManagement,
+            accountManagement
+        }
+        await UserServices.findUserByIdAndUpdate(userId, { permission: userData });
+
+        const User = await UserServices.findUserById(userId);
+
+        res.json({
+            status: 200,
+            response: "Permission Updated Successfully",
+            user: User,
+        });
+
+    } catch (err) {
+        res.json({ status: 400, response: err.message });
+    }
+}
+
+const AdminAllUser = async (req, res, next) => {
+    try {
+        const { role, active } = req.body
+        if (!role || !active) {
+            return res.json({ status: 401, response: "Missing Parameters" });
+        }
+        const user = await UserServices.viewAllUser({ role, active });
+        res.json({ status: 200, response: "All Users", user });
+
+    } catch (err) {
+        res.json({ status: 400, response: err.message });
+    }
+};
 
 
 module.exports = {
@@ -336,6 +425,11 @@ module.exports = {
     UserForgetPassword,
     UserPasswordReset,
     UserSingleView,
+    UserDeleteByToken,
     passwordChange,
+    updateUserByToken,
     addUser,
+    updateUserPermissionById,
+    AdminAllUser
+
 };
