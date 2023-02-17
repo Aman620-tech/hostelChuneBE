@@ -801,8 +801,7 @@ const inviteMail = async (userData) => {
     });
 }
 const forgetPasswordMail = async ({ link, email }) => {
-
-
+    
     mailOption = {
         to: email,
         subject: "Forget password link",

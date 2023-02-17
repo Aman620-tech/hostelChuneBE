@@ -11,8 +11,26 @@ const hostelRoomSchema = mongoose.Schema(
             default: true,
         },
         usedBy: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
+            userId:{
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User"
+            },
+            RoomNumber:{
+                type: Number,
+                require: true
+                // type: mongoose.Schema.Types.ObjectId,
+                // ref: "User"
+            },
+            startingDate:{
+                type: String,
+                require: true
+
+            },
+            endingDate:{
+                type: String, 
+                require: true
+
+            }
         }],
         charge: {
             type: Boolean,
@@ -24,25 +42,27 @@ const hostelRoomSchema = mongoose.Schema(
             },
             available: {
                 type: Boolean,
-                default: true,
             },
             startTime: {
                 type: TimeRanges,
             },
             endTime: {
-                type: Date,
+                type: TimeRanges,
             }
         }],
         numberOfRoom: {
             type: Number,
             require: true
-
+        },
+        bookedRoom: {
+            type: Number,
+            default:null    
         },
         image: [{
-            imageName: {
+            name: {
                 type: String,
             },
-            imagePath: {
+            url: {
                 type: String,
             },
         }],

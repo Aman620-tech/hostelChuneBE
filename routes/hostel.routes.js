@@ -1,8 +1,10 @@
 const hostelRoutes = require("express").Router();
 const { UserSingleView, passwordChange } = require("../controller/user.controller");
-// const {  } = require('../middleware/userAuth')
+const { hostelAdd,hostelFindById,updateHostel } = require("../controller/hostel.controller");
+const {BusinessAuthenticate  } = require('../middleware/userAuth')
 
-// hostelRoutes.get("/view",adminAuthenticate , UserSingleView);
+hostelRoutes.get("/register",BusinessAuthenticate , hostelAdd);
+hostelRoutes.get("/view/:hostelId",BusinessAuthenticate , hostelFindById);
 
 
 module.exports = hostelRoutes

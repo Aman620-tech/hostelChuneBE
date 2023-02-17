@@ -118,6 +118,43 @@ const userAuthenticate = async (req, res, next) => {
     res.json({ status: 400, Error: err.message });
   }
 };
+const BusinessAuthenticate = async (req, res, next) => {
+  try {
+    const token = req.header("token");
+
+    if (!token) {
+      return res.json({
+        status: 400,
+        message: "No authorization token is sent with request",
+      });
+    }
+    const id = await jwt.verify(token, process.env.JWT_SECRET);
+    const Dec = await jwt.decode(token,{complete:true})
+    console.log("object", id);
+    const user = await UserService.findUserById(id.id);
+
+    if (user.isDeleted === true) {
+      return res.json({
+        status: 400,
+        message: `User Not Found`,
+      });
+    }
+    
+    if (user.active === false) {
+      return res.json({
+        status: 400,
+        message: `you are blocked please drop a mail to ${process.env.User_Email}`,
+      });
+    }
+    if (user.role === "business") {
+      req.user = user;
+      return next();
+    }
+    return res.json({ status: 400, response: "Not a user" });
+  } catch (err) {
+    res.json({ status: 400, Error: err.message });
+  }
+};
 
 module.exports = {
   tokenCreate,
@@ -126,6 +163,7 @@ module.exports = {
   verifyToken,
   forgetPasswordToken,
   userAuthenticate,
+  BusinessAuthenticate
 };
 
 //

@@ -4,6 +4,7 @@ const hostelSchema = mongoose.Schema(
   {
     bankName: {
       type: String,
+      default:null
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -11,32 +12,37 @@ const hostelSchema = mongoose.Schema(
     },
     currency:{
         type: String,
+        default:null
     },
     accountNumber: {
       type: Number,
+      default:null
     },
     ifscCode: {
       type: String,
+      default:null
     },
     country: {
       type: String,
+      default:null
     },
     state: {
       type: String,
+      default:null
     },
     city: {
       type: String,
+      default:null
+
     },
     pinCode: {
       type: Number,
+      default:null
+
     },
-    passbookImage: {
-      imageName: {
-        type: String,
-      },
-      imagePath: {
-        type: String,
-      },
+    active:{
+      type: Boolean,
+      default: true,
     },
     verified: {
       type: Boolean,

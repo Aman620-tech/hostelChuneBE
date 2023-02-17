@@ -1,9 +1,10 @@
 const UserServices = require("../model/user/user.function");
-const { uploadFile, DeleteFile } = require("../services/fileUpload");
+const { uploadFile, DeleteFile } = require("../utils/fileUpload");
 const { genSalt, hash, compare } = require("bcrypt");
 const { tokenCreate, tokenVerify, forgetPasswordToken } = require("../middleware/userAuth");
 const { createTransport } = require("nodemailer");
-const { welcomeMail, inviteMail, forgetPasswordMail } = require('../services/mail-Setup')
+const {imgPath} = require('../utils/s3-routes')
+const { welcomeMail, inviteMail, forgetPasswordMail } = require('../utils/mail-Setup')
 
 const userRegister = async (req, res, next) => {
     try {
@@ -57,19 +58,18 @@ const userRegister = async (req, res, next) => {
             console.log("first", profilePicture);
             if (profilePicture) {
                 const extensions = [".png", ".jpg", ".jpeg"];
-                const fileLink = await uploadFile(profilePicture, extensions);
-                console.log(fileLink);
+                path = 'profile/'
+                const fileLink = await uploadFile(profilePicture,path,extensions);
+                // console.log(fileLink);
                 const data = {
                     image: {
                         name: profilePicture.name,
                         url: fileLink,
                     },
                 };
-                await UserServices.findUserByIdAndUpdate(user._id, data);
+                user = await UserServices.findUserByIdAndUpdate(user._id, data);
             }
         }
-        const User = await UserServices.findUserById(user._id);
-
         const token = await tokenCreate(user._id);
         await welcomeMail({ email, password })
 
@@ -274,14 +274,31 @@ const updateUserByToken = async (req, res, next) => {
             gender,
             adharCardNo,
         }
-      
-        const User=  await UserServices.findUserByIdAndUpdate(req.user._id, userData);
 
+        const User = await UserServices.findUserByIdAndUpdate(req.user._id, userData);
+        if (req.files) {
+            const profilePicture = req.files["image"];
+            console.log("first", profilePicture);
+            if (profilePicture) {
+                const extensions = [".png", ".jpg", ".jpeg"];
+
+                const fileLink = await uploadFile(profilePicture,extensions);
+                // console.log(fileLink);
+                const data = {
+                    image: {
+                        name: profilePicture.name,
+                        url: fileLink,
+                    },
+                };
+                  await UserServices.findUserByIdAndUpdate(req.user._id, data);
+            }
+        }       
+         const user = await UserServices.findUserById(req.user._id);
 
         res.json({
             status: 200,
             response: "Password Updated Successfully",
-            user: User,
+            user,
         });
 
     } catch (err) {
@@ -290,12 +307,13 @@ const updateUserByToken = async (req, res, next) => {
 }
 const UserDeleteByToken = async (req, res, next) => {
     try {
-         await UserServices.findUserByIdAndUpdate(req.user._id, { active: false, isDeleted: true });
+        await UserServices.findUserByIdAndUpdate(req.user._id, { active: false, isDeleted: true });
         res.json({ status: 200, response: "User Deleted Successfully" });
     } catch (err) {
         res.json({ status: 400, response: err.message });
     }
 };
+
 
 
 // ==================   Admin ===================
@@ -389,9 +407,7 @@ const updateUserPermissionById = async (req, res, next) => {
             feedbackManagement,
             accountManagement
         }
-        await UserServices.findUserByIdAndUpdate(userId, { permission: userData });
-
-        const User = await UserServices.findUserById(userId);
+        const User = await UserServices.findUserByIdAndUpdate(userId, { permission: userData });
 
         res.json({
             status: 200,
@@ -411,12 +427,15 @@ const AdminAllUser = async (req, res, next) => {
             return res.json({ status: 401, response: "Missing Parameters" });
         }
         const user = await UserServices.viewAllUser({ role, active });
-        res.json({ status: 200, response: "All Users", user });
+        res.json({ status: 200, response: `All ${role}`, user });
 
     } catch (err) {
         res.json({ status: 400, response: err.message });
     }
 };
+
+
+
 
 
 module.exports = {

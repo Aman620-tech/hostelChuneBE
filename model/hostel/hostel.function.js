@@ -11,16 +11,22 @@ class HostelServices {
         return hostel;
     };
     findHostelById = async (hostelId) => {
-        const user = await Hostel.findById(hostelId);
-        return user;
+        const hostel = await Hostel.findById(hostelId);
+        return hostel;
     };
-    findUserByIdAndUpdate = async (userId, data) => {
-        const user = await User.findByIdAndUpdate(
-            userId,
+    findHostelByIdAndUserId = async (hostelId,userId) => {
+        const hostel = await Hostel.find(hostelId,userId);
+        return hostel;
+    };
+    findUserByIdAndUpdate = async (hostelId, data) => {
+         await User.findByIdAndUpdate(
+            hostelId,
             { $set: data },
             { new: true }
         );
-        return user;
+        const hostel = await this.findHostelById(hostelId)
+
+        return hostel;
     };
 }
 module.exports = new HostelServices();
