@@ -108,7 +108,6 @@ const userLogin = async (req, res, next) => {
                     "OOps your account is not active please mail to microcombusiness@gmail.com ",
             });
         }
-
         const token = await tokenCreate(user._id);
         res.json({ status: 200, response: " Logged Successful", user, token });
     } catch (err) {
@@ -233,7 +232,7 @@ const passwordChange = async (req, res, next) => {
         const userPassword = {
             password: hashPassword,
         };
-        await UserUpdateData(req.user._id, userPassword);
+        await UserServices.findUserByIdAndUpdate(req.user._id, userPassword);
         const User = await UserServices.findUserById(req.user._id);
 
         res.json({
@@ -375,13 +374,12 @@ const addUser = async (req, res, next) => {
             password: hashPassword,
         };
         let user = await UserServices.userCreate(userData);
-        console.log("user", user);
+        // console.log("user", user);
         await inviteMail({ email, password })
         res.json({
             status: 200,
-            response: "User Invited",
-            user: User,
-            token,
+            response: "User Invitation Send",
+            user,
         });
     } catch (err) {
         res.json({ status: 400, response: err.message });
@@ -434,6 +432,24 @@ const AdminAllUser = async (req, res, next) => {
     }
 };
 
+const UserDeleteByAdmin = async (req, res, next) => {
+    try {
+        const {userId} = req.params
+        const user = await UserServices.findUserById(userId)
+      if(user.role =="admin"){
+       return res.json({ status: 400, response: "Admin Can not be deleted" });
+
+      }
+        await DeleteFile(user.image.url)
+
+        await UserServices.findUserByIdAndDelete(userId);
+        res.json({ status: 200, response: "User Deleted Successfully" });
+    } catch (err) {
+        res.json({ status: 400, response: err.message });
+    }
+};
+
+
 
 
 
@@ -449,6 +465,7 @@ module.exports = {
     updateUserByToken,
     addUser,
     updateUserPermissionById,
-    AdminAllUser
+    AdminAllUser,
+    UserDeleteByAdmin
 
 };

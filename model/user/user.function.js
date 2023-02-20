@@ -26,7 +26,7 @@ class UserServices {
     const user = await this.findUserById(userId)
     return user;
   };
-  findUserByIdAndDelete = async (userId, data) => {
+  findUserByIdAndDelete = async (userId) => {
     await User.findByIdAndDelete(userId)
     const user = await this.findUserById(userId)
     return user;

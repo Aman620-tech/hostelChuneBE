@@ -64,7 +64,7 @@ const hostelSchema = mongoose.Schema(
       },
     },
   },
-  { timeStamp: true }
+  { timestamps: true }
 );
 
 const User = mongoose.model("hostel", hostelSchema);

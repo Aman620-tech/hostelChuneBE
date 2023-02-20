@@ -1,6 +1,6 @@
 const AdminRoutes = require("express").Router();
 const {addUser,updateUserPermissionById, UserSingleView, 
-    passwordChange,AdminAllUser,
+    passwordChange,AdminAllUser,UserDeleteByAdmin,
     updateUserByToken } = require("../controller/user.controller");
 const { adminAuthenticate } = require('../middleware/userAuth')
 const { adminHostelFindById,adminAllHostelFind} = require('../controller/hostel.controller')
@@ -17,6 +17,7 @@ AdminRoutes.patch("/update",adminAuthenticate, updateUserByToken);
 
 // user
 AdminRoutes.post("/add-user",adminAuthenticate, addUser);
+AdminRoutes.delete("/delete-user/:userId",adminAuthenticate, UserDeleteByAdmin);
 
 
 
@@ -26,7 +27,7 @@ AdminRoutes.post("/permission/:userId",adminAuthenticate, updateUserPermissionBy
 
 
 AdminRoutes.patch("/hostel/:hostelId",adminAuthenticate, adminHostelFindById);
-AdminRoutes.patch("/all/hostel",adminAuthenticate, adminAllHostelFind);
+AdminRoutes.get("/all/hostel",adminAuthenticate, adminAllHostelFind);
 
 
 module.exports = AdminRoutes;

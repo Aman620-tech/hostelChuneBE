@@ -34,7 +34,6 @@ const userSchema = mongoose.Schema(
     },
     mobileNumber: {
       type: Number,
-      unique: true,
     },
     address: {
       type: String,
@@ -104,12 +103,12 @@ const userSchema = mongoose.Schema(
       type: String,
       enum: ["male", "female", "other"],
     },
-    lastLogin: {
-      type: String,
-      default: Date.now,
-    },
+    // lastLogin: {
+    //   type: String,
+    //   default: new Date(),
+    // },
   },
-  { timeStamp: true }
+  { timestamps: true }
 );
 
 const User = mongoose.model("User", userSchema);
