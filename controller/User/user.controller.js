@@ -29,7 +29,7 @@ const userRegister = async (req, res, next) => {
         if (role === "admin" || role === "subadmin") {
             return res.json({ Status: 401, response: "Oops Not allowed" });
         }
-        let userEmail = await UserServices.findUserByEmail ({email});
+        let userEmail = await UserServices.findUserByEmail(email);
 
         if (userEmail){
             return res.json({ Status: 401, response: "Email Already Exists" });
