@@ -29,7 +29,11 @@ const userRegister = async (req, res, next) => {
         if (role === "admin" || role === "subadmin") {
             return res.json({ Status: 401, response: "Oops Not allowed" });
         }
+        let userEmail = await UserServices.findUserByEmail ({email});
 
+        if (userEmail){
+            return res.json({ Status: 401, response: "Email Already Exists" });
+        }
         const salt = await genSalt(8);
         const hashPassword = await hash(password, salt);
         // password = hashPassword;
