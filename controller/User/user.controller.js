@@ -1,10 +1,8 @@
-const UserServices = require("../model/user/user.function");
-const { uploadFile, DeleteFile } = require("../utils/fileUpload");
+const UserServices = require("../../model/user/user.function");
+const { uploadFile, DeleteFile } = require("../../utils/fileUpload");
 const { genSalt, hash, compare } = require("bcrypt");
-const { tokenCreate, tokenVerify, forgetPasswordToken } = require("../middleware/userAuth");
-const { createTransport } = require("nodemailer");
-const {imgPath} = require('../utils/s3-routes')
-const { welcomeMail, inviteMail, forgetPasswordMail } = require('../utils/mail-Setup')
+const { tokenCreate, tokenVerify, forgetPasswordToken } = require("../../middleware/userAuth");
+const { welcomeMail, forgetPasswordMail } = require('../../utils/mail-Setup')
 
 const userRegister = async (req, res, next) => {
     try {
@@ -76,7 +74,7 @@ const userRegister = async (req, res, next) => {
         res.json({
             status: 200,
             response: "User Created",
-            user: User,
+            user,
             token,
         });
     } catch (err) {
@@ -313,147 +311,6 @@ const UserDeleteByToken = async (req, res, next) => {
     }
 };
 
-
-
-// ==================   Admin ===================
-
-const addUser = async (req, res, next) => {
-    try {
-        const {
-            firstName,
-            lastName,
-            email,
-            mobileNumber,
-            role,
-            address,
-            country,
-            state,
-            permission: {
-                userManagement,
-                hostelManagement,
-                kycManagement,
-                contentManagement,
-                feedbackManagement,
-                accountManagement
-            },
-            city,
-            pinCode,
-            gender,
-            adharCardNo,
-        } = req.body;
-
-        if (!firstName || !lastName || !email || !mobileNumber) {
-            return res.json({ Status: 401, response: "Missing values" });
-        }
-        const password = (Math.random()).toString(36).substring(2);
-        const salt = await genSalt(8);
-        const hashPassword = await hash(password, salt);
-        // password = hashPassword;
-        const userData = {
-            firstName,
-            lastName,
-            email,
-            role,
-            mobileNumber,
-            address,
-            country,
-            permission: {
-                userManagement,
-                hostelManagement,
-                kycManagement,
-                contentManagement,
-                feedbackManagement,
-                accountManagement
-            },
-            state,
-            city,
-            pinCode,
-            gender,
-            adharCardNo,
-            active: true,
-            password: hashPassword,
-        };
-        let user = await UserServices.userCreate(userData);
-        // console.log("user", user);
-        await inviteMail({ email, password })
-        res.json({
-            status: 200,
-            response: "User Invitation Send",
-            user,
-        });
-    } catch (err) {
-        res.json({ status: 400, response: err.message });
-    }
-};
-
-const updateUserPermissionById = async (req, res, next) => {
-    try {
-        const { userId } = req.params
-        const {
-            userManagement,
-            hostelManagement,
-            kycManagement,
-            contentManagement,
-            feedbackManagement,
-            accountManagement
-        } = req.body;
-        const userData = {
-            userManagement,
-            hostelManagement,
-            kycManagement,
-            contentManagement,
-            feedbackManagement,
-            accountManagement
-        }
-        const User = await UserServices.findUserByIdAndUpdate(userId, { permission: userData });
-
-        res.json({
-            status: 200,
-            response: "Permission Updated Successfully",
-            user: User,
-        });
-
-    } catch (err) {
-        res.json({ status: 400, response: err.message });
-    }
-}
-
-const AdminAllUser = async (req, res, next) => {
-    try {
-        const { role, active } = req.body
-        if (!role || !active) {
-            return res.json({ status: 401, response: "Missing Parameters" });
-        }
-        const user = await UserServices.viewAllUser({ role, active });
-        res.json({ status: 200, response: `All ${role}`, user });
-
-    } catch (err) {
-        res.json({ status: 400, response: err.message });
-    }
-};
-
-const UserDeleteByAdmin = async (req, res, next) => {
-    try {
-        const {userId} = req.params
-        const user = await UserServices.findUserById(userId)
-      if(user.role =="admin"){
-       return res.json({ status: 400, response: "Admin Can not be deleted" });
-
-      }
-        await DeleteFile(user.image.url)
-
-        await UserServices.findUserByIdAndDelete(userId);
-        res.json({ status: 200, response: "User Deleted Successfully" });
-    } catch (err) {
-        res.json({ status: 400, response: err.message });
-    }
-};
-
-
-
-
-
-
 module.exports = {
     userRegister,
     userLogin,
@@ -463,9 +320,4 @@ module.exports = {
     UserDeleteByToken,
     passwordChange,
     updateUserByToken,
-    addUser,
-    updateUserPermissionById,
-    AdminAllUser,
-    UserDeleteByAdmin
-
 };

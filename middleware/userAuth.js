@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { userSingleView } = require("../model/user/user.function");
+const AdminService = require("../model/Admin/Admin.function");
 const UserService = require("../model/user/user.function");
 
 const tokenCreate = async (id) => {
@@ -67,9 +67,10 @@ const adminAuthenticate = async (req, res, next) => {
       });
     }
     const id = await jwt.verify(token, process.env.JWT_SECRET);
-    const user = await UserService.findUserById(id.id);
+    const user = await AdminService.findUserById(id.id);
 
-    if (user.role === "admin") {
+    console.log("user.isAdmin",user.isAdmin);
+    if (user.isAdmin === true) {
       req.user = user; // token
       return next();
     }
@@ -93,7 +94,7 @@ const userAuthenticate = async (req, res, next) => {
     }
     const id = await jwt.verify(token, process.env.JWT_SECRET);
     const Dec = await jwt.decode(token,{complete:true})
-    console.log("object", id);
+    console.log("object", Dec);
     const user = await UserService.findUserById(id.id);
 
     if (user.isDeleted === true) {

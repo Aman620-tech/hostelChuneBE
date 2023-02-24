@@ -1,5 +1,5 @@
-const HostelServices = require('../model/hostel/hostel.function');
-const { uploadFile, DeleteFile } = require("../utils/fileUpload");
+const HostelServices = require('../../model/hostel/hostel.function');
+const { uploadFile, DeleteFile } = require("../../utils/fileUpload");
 
 const hostelAdd = async (req, res) => {
     try {
@@ -84,39 +84,4 @@ const updateHostel = async (req, res) => {
 }
 
 
-//Admin View
-const adminHostelFindById = async (req, res) => {
-    try {
-        const { hostelId } = req.params
-        let hostel = HostelServices.findHostelById(hostelId)
-
-
-        res.json({
-            status: 200,
-            response: "Single Hostel View",
-            hostel,
-        });
-    } catch (err) {
-        res.json({ status: 400, response: err.message })
-
-    }
-}
-
-
-const adminAllHostelFind = async (req, res) => {
-    try {
-        let hostel = HostelServices.viewAllHostel()
-
-
-        res.json({
-            status: 200,
-            response: "Single Hostel View",
-            hostel,
-        });
-    } catch (err) {
-        res.json({ status: 400, response: err.message })
-
-    }
-}
-
-module.exports = { hostelAdd, hostelFindById, adminHostelFindById, adminAllHostelFind, updateHostel }
+module.exports = { hostelAdd, hostelFindById, updateHostel }

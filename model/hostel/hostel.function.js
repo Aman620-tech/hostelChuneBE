@@ -25,7 +25,6 @@ class HostelServices {
             { new: true }
         );
         const hostel = await this.findHostelById(hostelId)
-
         return hostel;
     };
 }

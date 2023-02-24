@@ -10,29 +10,14 @@ const hostelRoomSchema = mongoose.Schema(
             type: Boolean,
             default: true,
         },
-        usedBy: [{
-            userId:{
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "User"
-            },
-            RoomNumber:{
-                type: Number,
-                require: true
-                // type: mongoose.Schema.Types.ObjectId,
-                // ref: "User"
-            },
-            startingDate:{
-                type: String,
-                require: true
-
-            },
-            endingDate:{
-                type: String, 
-                require: true
-
-            }
-        }],
-        charge: {
+        type: {
+            type: String,
+            enum: ["budget", "Luxury", "Boutique", ""]
+        },
+        rate: {
+            type: Number,
+        },
+        active: {
             type: Boolean,
             default: false,
         },
@@ -56,7 +41,7 @@ const hostelRoomSchema = mongoose.Schema(
         },
         bookedRoom: {
             type: Number,
-            default:null    
+            default: null
         },
         image: [{
             name: {
@@ -66,9 +51,9 @@ const hostelRoomSchema = mongoose.Schema(
                 type: String,
             },
         }],
-        
+
     },
-    { timeStamp: true }
+    { timestamps: true }
 );
 
 const hostelRoom = mongoose.model("hostelRoom", hostelRoomSchema);

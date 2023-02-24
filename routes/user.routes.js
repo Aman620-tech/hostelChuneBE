@@ -1,5 +1,5 @@
 const userRoutes = require("express").Router();
-const { UserSingleView, passwordChange,UserDeleteByToken,updateUserByToken } = require("../controller/user.controller");
+const { UserSingleView, passwordChange,UserDeleteByToken,updateUserByToken } = require("../controller/User/user.controller");
 const { userAuthenticate } = require('../middleware/userAuth')
 
 

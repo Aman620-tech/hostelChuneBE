@@ -5,7 +5,7 @@ const {
   UserPasswordReset,
   UserForgetPassword,
   UserSingleView,
-} = require("../controller/user.controller");
+} = require("../controller/User/user.controller");
 const { verifyToken } = require("../middleware/userAuth");
 const AdminRoutes = require("./admin.routes");
 const hostelRoutes = require("./hostel.routes");
